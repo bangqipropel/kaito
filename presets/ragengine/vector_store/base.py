@@ -485,6 +485,16 @@ class BaseVectorStore(ABC):
                         "index": 0,
                     }
                 ],
+                usage={
+                    "prompt_tokens": self.llm.count_tokens(
+                        total_prompt_for_token_aprox
+                    ),
+                    "completion_tokens": self.llm.count_tokens(
+                        chat_result.response or ""
+                    ),
+                    "total_tokens": self.llm.count_tokens(total_prompt_for_token_aprox)
+                    + self.llm.count_tokens(chat_result.response or ""),
+                },
                 source_nodes=[
                     {
                         "doc_id": source_node.node.ref_doc_id,
